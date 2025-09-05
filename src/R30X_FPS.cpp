@@ -1370,6 +1370,29 @@ uint8_t R30X_FPS::exportImage () {
     return response; //return packet receive error code
   }
 }
+uint16_t R30X_FPS::streamImageToSerial(HardwareSerial &outStream) {
+  uint16_t totalBytes = 0;
+
+  while (true) {
+    // Wait for header
+    while (_serial->available() < 9);
+
+    uint8_t header[9];
+    _serial->readBytes(header, 9);
+
+    uint16_t len = (header[7] << 8) | header[8];
+    if (len == 0) break; // End of image
+
+    uint8_t payload[len + 2]; // +2 for checksum
+    _serial->readBytes(payload, len + 2);
+
+    outStream.write(payload, len); // Forward image bytes only
+    totalBytes += len;
+  }
+
+  return totalBytes;
+}
+
 
 //=========================================================================//
 //import an image file from computer to one of the buffers.
