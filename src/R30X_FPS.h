@@ -204,6 +204,7 @@ class R30X_FPS {
   uint8_t captureAndFullSearch (void);  //scan a finger and search the entire library
   uint8_t generateImage (void); //scan a finger, generate an image and store it in the buffer
   uint8_t exportImage (void); //export a fingerprint image from the sensor to the computer
+  uint16_t streamImageToSerial(HardwareSerial &outStream);
   uint8_t importImage (uint8_t* dataBuffer);  //import a fingerprint image from the computer to sensor
   uint8_t generateCharacter (uint8_t bufferId); //generate character file from image
   uint8_t generateTemplate (void);  //combine the two character files and generate a single template
